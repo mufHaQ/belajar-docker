@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  mongo:
+    container_name: mongo-compose-test
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - node-network
+  node:
+    container_name: node-compose-test
+    image: mufhaq/node-app-images-test:3.0
+    ports:
+      - 8000:8090
+    networks:
+      - node-network
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_HOST=mongo-compose-test
+      - MONGO_PORT=27017
+      - MONGO_COLLECTION=express
+
+networks:
+  node-network:
+    name: node-compose-network
